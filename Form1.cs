@@ -39,8 +39,8 @@ namespace Zref
                 //string[] separator = {" "}
                 string[] input = test[i].Split(' ');
 
-                //Console.WriteLine(input[0]);
-                //Console.WriteLine(input[1]);
+                Console.WriteLine(input[0]);
+                Console.WriteLine(input[1]);
                 if (input.Length == 2)
                 {
                     graf.AddEdge(input[0], input[1]);
@@ -77,10 +77,22 @@ namespace Zref
 
             graf.GetDFSAnswer("A", "J");
 
-            //graf.print_ans();
+            graf.print_ans();
 
             //Console.ReadLine();
             richTextBox1.Text = print[0];
+            List<string> vertices = graf.GetVertices();
+            comboBox1.BeginUpdate();
+            foreach (var v in vertices){
+                comboBox1.Items.Add(v);
+            }
+            comboBox1.EndUpdate();
+            comboBox2.BeginUpdate();
+            foreach (var v in vertices)
+            {
+                comboBox2.Items.Add(v);
+            }
+            comboBox2.EndUpdate();
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
@@ -110,7 +122,32 @@ namespace Zref
             this.ResumeLayout();
             //show the form 
             //this.ShowDialog();
+            
 
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string x = (comboBox1.SelectedItem).ToString();
+            if (radioButton1.Checked)
+            {
+                // do bfs
+                label2.Text = "BFS " + x;
+            }else
+            {
+                // do dfs
+                label2.Text = "DFS " + x;
+            }
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }
