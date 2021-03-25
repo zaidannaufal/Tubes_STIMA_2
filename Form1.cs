@@ -141,10 +141,7 @@ namespace Zref
 
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
+    
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -161,10 +158,6 @@ namespace Zref
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
+      
     }
 }
