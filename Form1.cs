@@ -158,6 +158,55 @@ namespace Zref
 
         }
 
-      
+        private string getFriendRec (Graph g1, string node)
+        {
+            string solution = "";
+            List<string> perantara = g1.GetListOfEdgesFrom(node);
+            List<string> friendrec = new List<string>();
+
+            solution += "Daftar rekomendasi teman untuk akun " + node + ":\n";
+
+            foreach (var item in perantara)
+            {
+                foreach (var item2 in g1.GetListOfEdgesFrom(item))
+                {
+                    if (!perantara.Contains(item2))
+                    {
+                        friendrec.Add(item2);
+                    }
+                }
+            }
+
+            foreach (var item in friendrec)
+            {
+                int count = 0;
+                string buffer = "";
+                foreach (var item2 in g1.GetListOfEdgesFrom(item))
+                {
+                    if (!perantara.Contains(item2))
+                    {
+                        count++;
+                        buffer += item2 + "\n";
+                    }
+                }
+
+                solution += "Nama akun: " + item + "\n";
+                solution += count.ToString() + " mutual friends:\n";
+                solution += buffer;
+            }
+
+            if (friendrec.Count() == 0)
+            {
+                return "";
+            }
+
+            return solution;
+        }
+
+        private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            richTextBox1.Text = "WAHAHAHA\n";
+            richTextBox1.Text += "\tYOYO";
+        }
     }
 }
