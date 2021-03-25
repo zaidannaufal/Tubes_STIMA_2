@@ -13,6 +13,9 @@ namespace Zref
 {
     public partial class Form1 : Form
     {
+        Graph grafGlobal = new Graph();
+        Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+
         public Form1()
         {
             InitializeComponent();
@@ -23,88 +26,24 @@ namespace Zref
         {
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                label1.Text = ofd.SafeFileName;
+                //label1.Text = ofd.SafeFileName;
                 string[] test = File.ReadAllLines(@ofd.FileName);
                 label2.Text = ofd.FileName;
-                mainmain(test);
+                loadGraf(test);
             }
-        }
-        public void mainmain(string[] test)
-        {
-            DFS graf = new DFS();
-            gambar();
-            for (int i = 1; i < test.Length; i++)
-            {
-                // string[] input = test[i].split(" ");
-                //string[] separator = {" "}
-                string[] input = test[i].Split(' ');
-
-                Console.WriteLine(input[0]);
-                Console.WriteLine(input[1]);
-                if (input.Length == 2)
-                {
-                    graf.AddEdge(input[0], input[1]);
-                }
-                else
-                {
-                    graf.AddEdge(input[0]);
-                }
-
-
-                //graf.sorting_key();
-
-
-            }
-
-            //graf.AddEdge("J","I");
-
-            graf.sorting_value();
-
-
-            /*foreach(var v in graf["A"])
-            {
-                Console.WriteLine(v + " | ");
-            }
-            */
-            string[] print = new string[10000];
-
-            print.Append("PRINT DFS GRAF");
-            //graf.PrintGraph();
-            print.Append("total simpul = " + graf.GetTotalVertices());
-            List<string> listOfVertices = graf.GetVertices();
-            print.Append("derajat dari " + listOfVertices[0] + " adalah " + graf.GetDegree(listOfVertices[0]));
-
-
-            graf.GetDFSAnswer("A", "J");
-
-            graf.print_ans();
-
-            //Console.ReadLine();
-            
-            List<string> vertices = graf.GetVertices();
-            comboBox1.BeginUpdate();
-            foreach (var v in vertices){
-                comboBox1.Items.Add(v);
-            }
-            comboBox1.EndUpdate();
-            comboBox2.BeginUpdate();
-            foreach (var v in vertices)
-            {
-                comboBox2.Items.Add(v);
-            }
-            comboBox2.EndUpdate();
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-
+             
         }
 
         public void gambar()
         {
            // Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+            
             //create the graph content 
+            /*
             graph.AddEdge("A", "B");
             graph.AddEdge("B", "C");
             graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
@@ -113,6 +52,7 @@ namespace Zref
             Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
             c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
             c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
+            */
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
             renderer.CalculateLayout();
             int width = 200;
@@ -141,72 +81,152 @@ namespace Zref
 
         }
 
-    
-
         private void button2_Click(object sender, EventArgs e)
         {
             string x = (comboBox1.SelectedItem).ToString();
             if (radioButton1.Checked)
             {
-                // do bfs
+                //richTextBox1.Text = "THOU SUCCED";
+                //Dobfs();
                 label2.Text = "BFS " + x;
             }else
             {
-                // do dfs
+                //dodfs();
                 label2.Text = "DFS " + x;
             }
+            gambar();
+        }
+
+        private void Dobfs()
+        {
+            BFS current = new BFS();
+            current.copyGraf(grafGlobal);
+            List<string> solution = current.GetBFSAnswer(comboBox1.Text, comboBox2.Text);
+            string sol = "";
+
+            if (solution.Count() != 0)
+            {
+                sol += "Nama akun: " + comboBox1.Text + " dan " + comboBox2.Text + "\n";
+                sol += "Connection Degree : " + (solution.Count() - 1).ToString() + "\n";
+                int i = 0;
+                foreach (var item in solution)
+                {
+                    graph.FindNode(item).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
+                    if(i != 0)
+                    {
+                        sol += " --> ";
+                    }
+                    sol += item;
+                    i++;
+                }
+            }
+            //richTextBox1.Text = sol;
+        }
+
+        private void dodfs()
+        {
 
         }
 
-        private string getFriendRec (Graph g1, string node)
+        //----------------FIX-------------------
+        private string getFriendRec (string node)
         {
             string solution = "";
-            List<string> perantara = g1.GetListOfEdgesFrom(node);
+            List<string> perantara = grafGlobal.GetListOfEdgesFrom(node);
             List<string> friendrec = new List<string>();
+            Dictionary<string, List<string>> final = new Dictionary<string, List<string>>();
 
             solution += "Daftar rekomendasi teman untuk akun " + node + ":\n";
 
             foreach (var item in perantara)
             {
-                foreach (var item2 in g1.GetListOfEdgesFrom(item))
+                foreach (var item2 in grafGlobal.GetListOfEdgesFrom(item))
                 {
-                    if (!perantara.Contains(item2))
+                    if (!perantara.Contains(item2) && !friendrec.Contains(item2) && !item2.Equals(node))
                     {
                         friendrec.Add(item2);
                     }
                 }
             }
-
+            
             foreach (var item in friendrec)
             {
                 int count = 0;
-                string buffer = "";
-                foreach (var item2 in g1.GetListOfEdgesFrom(item))
+                List<string> buff2 = new List<string>();
+                foreach (var item2 in grafGlobal.GetListOfEdgesFrom(item))
                 {
-                    if (!perantara.Contains(item2))
+                    if (perantara.Contains(item2) && !item2.Equals(item))
                     {
                         count++;
-                        buffer += item2 + "\n";
+                        buff2.Add(item2);
                     }
                 }
+                final.Add(item, buff2);
+            }
 
-                solution += "Nama akun: " + item + "\n";
-                solution += count.ToString() + " mutual friends:\n";
-                solution += buffer;
+            final = final.OrderByDescending(x => x.Value.Count()).ToDictionary(x => x.Key, x => x.Value);
+
+            foreach (var item in final.Keys)
+            {
+                string buffer = "";
+                buffer += "Nama Akun: " + item + "\n";
+                buffer += final[item].Count().ToString() + " mutual friends:\n";
+                foreach (var item2 in final[item])
+                {
+                    buffer += item2 + "\n"; 
+                }
+                solution += buffer + "\n";
             }
 
             if (friendrec.Count() == 0)
             {
                 return "";
             }
+            
 
             return solution;
         }
 
+        //----------------FIX-------------------
         private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            richTextBox1.Text = "WAHAHAHA\n";
-            richTextBox1.Text += "\tYOYO";
+            richTextBox1.Text = getFriendRec(comboBox1.Text);
+        }
+
+        //----------------FIX-------------------
+        private void loadGraf(string[] test)
+        {
+            for (int i = 1; i < test.Length; i++)
+            {
+                string[] input = test[i].Split(' ');
+
+                if (input.Length == 2)
+                {
+                    grafGlobal.AddEdge(input[0], input[1]);
+                    graph.AddEdge(input[0], input[1]);
+                }
+                else
+                {
+                    grafGlobal.AddEdge(input[0]);
+                    graph.AddNode(input[0]);
+                }
+            }
+
+            gambar();
+
+            List<string> vertices = grafGlobal.GetVertices();
+            comboBox1.BeginUpdate();
+            foreach (var v in vertices)
+            {
+                comboBox1.Items.Add(v);
+            }
+            comboBox1.EndUpdate();
+            comboBox2.BeginUpdate();
+            foreach (var v in vertices)
+            {
+                comboBox2.Items.Add(v);
+            }
+            comboBox2.EndUpdate();
         }
     }
 }

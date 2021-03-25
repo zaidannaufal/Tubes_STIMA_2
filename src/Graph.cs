@@ -92,6 +92,10 @@ namespace Zref
         }
         */
 
+        public SortedDictionary<string, List<string>> getGraph()
+        {
+            return this.graphDict;
+        }
 
 
         public void PrintGraph()

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Zref.src
+namespace Zref
 {
     class BFS : Graph  //Child dari class Graph
     {
@@ -17,6 +17,11 @@ namespace Zref.src
             antrian = new Queue<List<string>>();
             antrian_pair = new Queue<string>();
             Ans = new List<string>();
+        }
+
+        public void copyGraf(Graph g1)
+        {
+            this.graphDict = g1.getGraph();
         }
 
         private void empty_antrian()
