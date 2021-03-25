@@ -80,7 +80,7 @@ namespace Zref
             graf.print_ans();
 
             //Console.ReadLine();
-            richTextBox1.Text = print[0];
+            
             List<string> vertices = graf.GetVertices();
             comboBox1.BeginUpdate();
             foreach (var v in vertices){
@@ -102,7 +102,7 @@ namespace Zref
 
         public void gambar()
         {
-            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+           // Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
             //create the graph content 
             graph.AddEdge("A", "B");
@@ -113,16 +113,31 @@ namespace Zref
             Microsoft.Msagl.Drawing.Node c = graph.FindNode("C");
             c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
             c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
+            Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
+            renderer.CalculateLayout();
+            int width = 200;
+            Bitmap bitmap = new Bitmap(width, (int)(graph.Height * (width / graph.Width)));
+            renderer.Render(bitmap);
+            if (bitmap.Height > bitmap.Width)
+            {
+                bitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            }
+            pictureBox1.Image = bitmap;
+            
+
             //bind the graph to the viewer 
-            viewer.Graph = graph;
+            //viewer.Graph = graph;
             //associate the viewer with the form 
-            this.SuspendLayout();
-            viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Controls.Add(viewer);
-            this.ResumeLayout();
+            //this.SuspendLayout();
+            //viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            //pictureBox1.Contains(viewer);
+            //this.Controls.Add(viewer);
+            //this.Controls.Add(viewer);
+            //this.ResumeLayout();
+
             //show the form 
             //this.ShowDialog();
-            
+
 
         }
 
@@ -150,5 +165,6 @@ namespace Zref
         {
 
         }
+
     }
 }
