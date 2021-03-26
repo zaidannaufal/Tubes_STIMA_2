@@ -116,10 +116,11 @@ namespace Zref
             ret.Add(current.print_ans_recommendation());
             ret.Add(current.print_ans_explore());
             string[] z = (ret[1]).Split("->");
-            foreach (var i in z)
+            for (int i = 0; i < z.Length-1; i++)
             {
-                System.Diagnostics.Debug.WriteLine(i.trim());
+                graph.FindNode(z[i].Trim()).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
             }
+            graph.FindNode(y).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
             return ret;
         }
 
