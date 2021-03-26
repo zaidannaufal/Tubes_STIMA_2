@@ -28,15 +28,12 @@ namespace Zref
             {
                 //label1.Text = ofd.SafeFileName;
                 string[] test = File.ReadAllLines(@ofd.FileName);
-                label2.Text = ofd.FileName;
+                label1.Text = ofd.SafeFileName;
                 loadGraf(test);
             }
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-             
-        }
+       
 
         public void gambar()
         {
@@ -81,21 +78,7 @@ namespace Zref
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            string x = (comboBox1.SelectedItem).ToString();
-            if (radioButton1.Checked)
-            {
-                richTextBox1.Text = "THOU SUCCED";
-                //Dobfs();
-                label2.Text = "BFS " + x;
-            }else
-            {
-                //dodfs();
-                label2.Text = "DFS " + x;
-            }
-            gambar();
-        }
+        
 
         private void Dobfs()
         {
@@ -120,7 +103,7 @@ namespace Zref
                     i++;
                 }
             }
-            //richTextBox1.Text = sol;
+            richTextBox2.Text = sol;
         }
 
         private void dodfs()
@@ -190,7 +173,7 @@ namespace Zref
         //----------------FIX-------------------
         private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
         {
-            richTextBox1.Text = getFriendRec(comboBox1.Text);
+            //richTextBox1.Text = getFriendRec(comboBox1.Text);
         }
 
         //----------------FIX-------------------
@@ -227,6 +210,23 @@ namespace Zref
                 comboBox2.Items.Add(v);
             }
             comboBox2.EndUpdate();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            //string x = (comboBox1.SelectedItem).ToString();
+            if (radioButton1.Checked)
+            {
+                //richTextBox1.Text= getFriendRec(comboBox1.Text);
+                Dobfs();
+              
+            }
+            else
+            {
+                //dodfs();
+                //label2.Text = "DFS " + x;
+            }
+            gambar();
         }
     }
 }

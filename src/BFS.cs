@@ -8,8 +8,8 @@ namespace Zref
     {
         //----------------ATRIBUT-------------
         private List<string> Ans;
-        Queue<List<string>> antrian;
-        Queue<string> antrian_pair; //berpasangan dengan atribut antrian
+        public static Queue<List<string>> antrian;
+        public static Queue<string> antrian_pair; //berpasangan dengan atribut antrian
 
         //----------------METHOD-------------
         public BFS() : base()
@@ -26,20 +26,32 @@ namespace Zref
 
         private void empty_antrian()
         {
-            this.antrian.Clear();
-            this.antrian_pair.Clear();
+            antrian.Clear();
+            antrian_pair.Clear();
         }
 
         private void Enqueue(List<string> kandidatSolusi, string node)
         {
-            this.antrian.Enqueue(kandidatSolusi);
-            this.antrian_pair.Enqueue(node);
+            string temp= "";
+            antrian.Enqueue(kandidatSolusi);
+            antrian_pair.Enqueue(node);
+            foreach (var q in antrian)
+            {
+                foreach (var x in q)
+                {
+                    temp += x;
+                }
+                temp += '\n';
+                
+            }
+            System.Diagnostics.Debug.WriteLine(temp);
+
         }
 
         private void Dequeue()
         {
-            List<string> dummy1 = this.antrian.Dequeue();
-            string dummy2 = this.antrian_pair.Dequeue();
+            List<string> dummy1 = antrian.Dequeue();
+            string dummy2 = antrian_pair.Dequeue();
         }
 
         public List<string> GetBFSAnswer(string from, string goals)
@@ -57,7 +69,7 @@ namespace Zref
             //process
             while (!antrian.Count.Equals(0))
             {
-                temp_path = this.antrian.Peek();
+                temp_path = antrian.Peek();
 
                 foreach (var next_node in temp_path)
                 {
@@ -82,8 +94,10 @@ namespace Zref
                         Enqueue(temp_sol, next_node);
                     }
                 }
-
-                Dequeue();
+                
+                    Dequeue();
+                
+                
             }
 
             return new List<string>();//Tidak ada jalur/koneksi
