@@ -8,13 +8,13 @@ namespace Zref
     {
         //----------------ATRIBUT-------------
         private List<string> Ans;
-        private Queue<List<string>> antrian;
+        private Queue<HashSet<string>> antrian;
         private Queue<string> antrian_pair; //berpasangan dengan atribut antrian
 
         //----------------METHOD-------------
         public BFS() : base()
         {
-            antrian = new Queue<List<string>>();
+            antrian = new Queue<HashSet<string>>();
             antrian_pair = new Queue<string>();
             Ans = new List<string>();
         }
@@ -30,9 +30,9 @@ namespace Zref
             this.antrian_pair.Clear();
         }
 
-        private void Enqueue(List<string> kandidatSolusi, string node)
+        private void Enqueue(HashSet<string> kandidatSolusi, string node)
         {
-            List<string> p1 = new List<string>();
+            HashSet<string> p1 = new HashSet<string>();
             foreach (var item in kandidatSolusi)
             {
                 p1.Add(item);
@@ -46,7 +46,7 @@ namespace Zref
         {
             if (this.antrian.Count != 0 && this.antrian_pair.Count != 0)
             {
-                List<string> dummy1 = new List<string>();
+                HashSet<string> dummy1 = new HashSet<string>();
                 dummy1 = this.antrian.Dequeue();
                 string dummy2 = this.antrian_pair.Dequeue();
             }
@@ -55,12 +55,12 @@ namespace Zref
         public List<string> GetBFSAnswer(string from, string goals)
         {
             this.empty_antrian();
-            List<string> temp_path;
+            HashSet<string> temp_path;
             //List<string> temp_sol = new List<string>();
             string curr_node;
 
             //initialize
-            List<string> first = new List<string>();
+            HashSet<string> first = new HashSet<string>();
             this.Enqueue(first, from);
 
             //process
