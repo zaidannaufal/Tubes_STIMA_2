@@ -93,7 +93,7 @@ namespace Zref
 			return false;
         }
 
-        public void GetAnswerFR(string vertex)
+        public void GetDFSAnswerFR(string vertex) // fr (INISIALISASI)
         {
 
 			List<string> list_goal = this.graphDict[vertex];
@@ -130,12 +130,7 @@ namespace Zref
                     
                 }
             }
-			/*graphDFS = this.graphDict.ToDictionary(
-				entry => entry.Key, 
-				entry => (SortedDictionary<string,List<string>>) entry.Value.Clone());*/
-
-
-			Console.WriteLine("NJIIIIIIIIIIIIII");
+			
 
 			foreach (KeyValuePair<string, List<string>> entry in graphDFS)
             {
@@ -157,16 +152,16 @@ namespace Zref
 
 			Console.WriteLine();
 			
-			recursiff(vertex,goal, this.visited_temp, iterasi, neighbour_vertex, graphDFS);
+			recursiveFR(vertex,goal, this.visited_temp, iterasi, neighbour_vertex, graphDFS);
         }
 
-		public void GetDFSAnswer(string vertex, string goal) // explore
+		public void GetDFSAnswerEF(string vertex, string goal) // explore
         {
 			int iterasi = 0;
 			recursive(vertex,goal,this.visited, iterasi);
         }
 
-		public void recursiff(string vertex,string goal, List<string> visited, int iterasi, List<string> neighbour_vertex, SortedDictionary<string, List<string>> graphDFS)
+		public void recursiveFR(string vertex,string goal, List<string> visited, int iterasi, List<string> neighbour_vertex, SortedDictionary<string, List<string>> graphDFS) // rekursif buat Friend recommendation
         {
 			Console.WriteLine("iterasi : " +iterasi);
 			this.visited_temp.Add(vertex);
@@ -321,17 +316,7 @@ namespace Zref
                 }
             }
 
-			Console.WriteLine("------------------------------");
-
-			/*foreach (KeyValuePair<string, List<string>> entry in this.graphDict)
-            {
-                Console.WriteLine("Vertices "+entry.Key+":");
-                Console.WriteLine("Edge to:");
-                for (int i =0; i < entry.Value.Count; i++)
-                {
-                    Console.WriteLine(i + 1 + ". " + entry.Value[i]);
-                }
-            }*/
+			
 
 			Console.WriteLine("PRINT ANS TEMP after");
 
@@ -350,11 +335,11 @@ namespace Zref
 				foreach (string next_vertex in this.graphDict[vertex].Where(vertex => !visited_temp.Contains(vertex))){
 					if (this.ans.Contains(goal))
 					{
-						Console.WriteLine("Skrg di sini" + vertex);
+						//Console.WriteLine("Skrg di sini" + vertex);
 						return;
 					}
-					Console.WriteLine("Skrg di siniiiiiiiiiiiii " + vertex);
-					recursiff(next_vertex,goal,visited, iterasi, neighbour_vertex, graphDFS);
+					//Console.WriteLine("Skrg di siniiiiiiiiiiiii " + vertex);
+					recursiveFR(next_vertex,goal,visited, iterasi, neighbour_vertex, graphDFS);
                 }
 
 
@@ -364,45 +349,27 @@ namespace Zref
 					return;
                 }
 
-				//Console.WriteLine("DI SINI GMN");
-                
-				//int last_idx = this.ans.Count() - 1;
-				//string temp = this.ans[this.ans.Count() -1];
-				Console.WriteLine("Count ans " + this.ans.Count());
 				
-				
-				//this.ans.RemoveAt(this.ans.Count() - 1);
-				//int new_last_idx = this.ans.Count() - 1;
 
 				if (this.ans.Count > 0)
                 {
 					//string temp = this.ans[this.ans.Count() -1];
 					this.ans.RemoveAt(this.ans.Count() - 1);
 					//Console.WriteLine("Sudah kehapus" + temp);
-					Console.WriteLine("Count ans " + this.ans.Count());
+					//Console.WriteLine("Count ans " + this.ans.Count());
 					
                 }
 				if (this.ans.Count != 0)
                 {
-					Console.WriteLine("BLM NOL");
-					recursiff(this.ans[this.ans.Count() - 1], goal, visited,iterasi,neighbour_vertex,graphDFS);
+					
+					recursiveFR(this.ans[this.ans.Count() - 1], goal, visited,iterasi,neighbour_vertex,graphDFS);
 
                 }
                 
                 
 				
 
-				Console.WriteLine("HALO");
-				Console.WriteLine("KOK HALO");
-				foreach (var v in ans)
-				{
-					Console.Write(v + " | ");
-				}
 				
-				
-
-				Console.WriteLine("HALO");
-				Console.WriteLine("SKRG NGPAIAN SIH" + vertex);
 
 				
 
@@ -414,7 +381,7 @@ namespace Zref
             }
 			
         }
-		public void recursive(string vertex,string goal, List<string> visited, int iterasi)
+		public void recursiveEF(string vertex,string goal, List<string> visited, int iterasi) // REKURSIF EXPLORE
         {
 			Console.WriteLine("iterasi : " +iterasi);
 			this.visited.Add(vertex);
@@ -456,7 +423,7 @@ namespace Zref
 					recursive(next_vertex,goal,visited, iterasi);
                 }
 
-				Console.WriteLine("HONJIIIIIIIIIIIROHOHOHOHOH");
+				
 
 				if (this.ans.Contains(goal))
                 {
@@ -464,7 +431,7 @@ namespace Zref
 					return;
                 }
 
-				Console.WriteLine("DI SINI GMN");
+				
                 
 				//int last_idx = this.ans.Count() - 1;
 				//string temp = this.ans[this.ans.Count() -1];
