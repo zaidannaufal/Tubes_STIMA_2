@@ -75,10 +75,7 @@ namespace Zref
 			return clone;
 			}
 		}*/
-		public void copyGraf(Graph g1)
-		{
-			this.graphDict = g1.getGraph();
-		}
+		
 
 
 		public bool isExist(string vertex, List<string> list)
@@ -98,9 +95,10 @@ namespace Zref
 
 			List<string> list_goal = this.graphDict[vertex];
 
-			int idx_ahirkhir = list_goal.Count();
-			string goal = list_goal[idx_akhir]; 
-            GetAnswer(vertex,goal);
+			int idx_akhir = list_goal.Count() -1;
+			string goal = list_goal[idx_akhir];
+			this.ans_temp.Clear();
+			GetAnswer(vertex,goal);
         }
 
 		public void GetAnswer(string vertex, string goal) // friend recom
@@ -158,7 +156,8 @@ namespace Zref
 		public void GetDFSAnswerEF(string vertex, string goal) // explore
         {
 			int iterasi = 0;
-			recursive(vertex,goal,this.visited, iterasi);
+			this.ans.Clear();
+			recursiveEF(vertex,goal,this.visited, iterasi);
         }
 
 		public void recursiveFR(string vertex,string goal, List<string> visited, int iterasi, List<string> neighbour_vertex, SortedDictionary<string, List<string>> graphDFS) // rekursif buat Friend recommendation
@@ -383,59 +382,59 @@ namespace Zref
         }
 		public void recursiveEF(string vertex,string goal, List<string> visited, int iterasi) // REKURSIF EXPLORE
         {
-			Console.WriteLine("iterasi : " +iterasi);
+			System.Diagnostics.Debug.WriteLine("iterasi : " +iterasi);
 			this.visited.Add(vertex);
-
+			
 			foreach (var v in ans)
             {
-                Console.Write(v + " | ");
+				System.Diagnostics.Debug.WriteLine(v + " | ");
             }
 
-			Console.WriteLine("Before");
+			System.Diagnostics.Debug.WriteLine("Before");
 
 			if (!(this.ans.Contains(vertex)))
             {
 				this.ans.Add(vertex);
-            }	
+            }
 
-			Console.WriteLine("after");
+			System.Diagnostics.Debug.WriteLine("after");
 
 			foreach (var v in ans)
             {
-                Console.Write(v + " | ");
+				System.Diagnostics.Debug.WriteLine(v + " | ");
             }
 
-			Console.WriteLine();
+			System.Diagnostics.Debug.WriteLine(" ");
 
 
-			Console.WriteLine(vertex);
+			System.Diagnostics.Debug.WriteLine(vertex);
 			if (this.graphDict.ContainsKey(vertex) && (this.ans.Count() > 0 || iterasi == 0)){
-				Console.WriteLine("AUOOOOOOOOO");
+				System.Diagnostics.Debug.WriteLine("AUOOOOOOOOO");
 				iterasi ++;
-				Console.WriteLine("HMMMM");
+				System.Diagnostics.Debug.WriteLine("HMMMM");
 				foreach (string next_vertex in this.graphDict[vertex].Where(vertex => !visited.Contains(vertex))){
 					if (this.ans.Contains(goal))
 					{
-						Console.WriteLine("Skrg di sini" + vertex);
+						System.Diagnostics.Debug.WriteLine("Skrg di sini" + vertex);
 						return;
 					}
-					Console.WriteLine("HOOHOHOHOHOH");
-					recursive(next_vertex,goal,visited, iterasi);
+					System.Diagnostics.Debug.WriteLine("HOOHOHOHOHOH");
+					recursiveEF(next_vertex,goal,visited, iterasi);
                 }
 
 				
 
 				if (this.ans.Contains(goal))
                 {
-					//Console.WriteLine("Skrg di " + vertex);
+					System.Diagnostics.Debug.WriteLine("Skrg di " + vertex);
 					return;
                 }
 
-				
-                
+
+
 				//int last_idx = this.ans.Count() - 1;
 				//string temp = this.ans[this.ans.Count() -1];
-				Console.WriteLine("Count ans " + this.ans.Count());
+				System.Diagnostics.Debug.WriteLine("Count ans " + this.ans.Count());
 				
 				
 				//this.ans.RemoveAt(this.ans.Count() - 1);
@@ -446,34 +445,34 @@ namespace Zref
 					//string temp = this.ans[this.ans.Count() -1];
 					this.ans.RemoveAt(this.ans.Count() - 1);
 					//Console.WriteLine("Sudah kehapus" + temp);
-					Console.WriteLine("Count ans " + this.ans.Count());
+					System.Diagnostics.Debug.WriteLine("Count ans " + this.ans.Count());
 					
                 }
 				if (this.ans.Count != 0)
                 {
-					Console.WriteLine("BLM NOL");
-					recursive(this.ans[this.ans.Count() - 1], goal, visited,iterasi);
+					System.Diagnostics.Debug.WriteLine("BLM NOL");
+					recursiveEF(this.ans[this.ans.Count() - 1], goal, visited,iterasi);
                 }
-                
-                
-				
 
-				Console.WriteLine("HALO");
+
+
+
+				System.Diagnostics.Debug.WriteLine("HALO");
 				//Console.WriteLine("KOK HALO");
-				/*foreach (var v in ans)
+				foreach (var v in ans)
 				{
-					Console.Write(v + " | ");
+					System.Diagnostics.Debug.WriteLine(v + " | ");
 				}
-				*/
-				
 
-				//Console.WriteLine("HALO");
-				//Console.WriteLine("SKRG NGPAIAN SIH" + vertex);
+
+
+				System.Diagnostics.Debug.WriteLine("HALO");
+				System.Diagnostics.Debug.WriteLine("SKRG NGPAIAN SIH" + vertex);
 
             }
             else
             {
-				Console.WriteLine("HALO DI WELSE");
+				System.Diagnostics.Debug.WriteLine("HALO DI WELSE");
 				return;
             }
 			
@@ -482,12 +481,17 @@ namespace Zref
 		public string print_ans_explore()
 		{
 			string ans_explore = "";
+			foreach (var i in this.ans)
+            {
+				System.Diagnostics.Debug.WriteLine(i+"|||");
+			}
 			if (this.ans.Count != 0)
 			{
 				for (int i = 0; i < this.ans.Count; i++)
 				{
 					if (i == (this.ans.Count - 1))
 					{
+						
 						ans_explore += (this.ans[i] + "\n");
 					}
 					else
@@ -500,15 +504,15 @@ namespace Zref
 				int degree = this.ans.Count - 2;
 				if ((degree % 10) == 2)
 				{
-					ans_explore += (degree + "nd-degree connection" + "\n");
+					ans_explore += (degree + "nd-degree connection"  );
 				}
 				else if ((degree % 10) == 3)
 				{
-					ans_explore += (degree + "rd-degree connection" + "\n");
+					ans_explore += (degree + "rd-degree connection" );
 				}
 				else
 				{
-					ans_explore += (degree + "th-degree connection" + "\n");
+					ans_explore += (degree + "th-degree connection" );
 				}
 			}
             else
@@ -589,7 +593,7 @@ namespace Zref
 					for (int i =0; i < entry.Value.Count; i++)
 					{
 
-						ans_rec += (entry.Value[i]);
+						ans_rec += (entry.Value[i] + "\n");
 					}
 				}
 			}

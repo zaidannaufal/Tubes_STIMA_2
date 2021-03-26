@@ -134,6 +134,43 @@ namespace Zref
         {
             return graphDict[vertices];
         }
+
+        public void copyGraphV2(Graph global)
+        {
+            SortedDictionary<string, List<string>> graphnew;
+            graphnew = new SortedDictionary<string, List<string>>();
+
+            foreach (KeyValuePair<string, List<string>> entry in global.graphDict)
+            {
+
+                for (int i = 0; i < entry.Value.Count; i++)
+                {
+                    if (graphnew.ContainsKey(entry.Key))
+                    {
+                        List<string> listOfVertices_add = graphnew[entry.Key];
+                        listOfVertices_add.Add(entry.Value[i]);
+                        graphnew[entry.Key] = listOfVertices_add;
+                    }
+                    else
+                    {
+                        List<string> listOfVertices_add = new List<string>();
+                        listOfVertices_add.Add(entry.Value[i]);
+                        graphnew.Add(entry.Key, listOfVertices_add);
+                    }
+
+                }
+            }
+            this.graphDict = graphnew; 
+        }
+
+        public void copyGraph(Graph global)
+        {
+            this.graphDict = global.getGraph();
+        }
+
+
     }
 }
+
+
 

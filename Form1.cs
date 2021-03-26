@@ -78,16 +78,16 @@ namespace Zref
 
         }
 
-        
+
 
         private void Dobfs()
         {
             BFS current = new BFS();
             current.copyGraf(grafGlobal);
-            List<string> solution = current.GetBFSAnswer(comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString());
+            List<string> solution = current.GetBFSAnswer(comboBox1.Text, comboBox2.Text);
             string sol = "";
 
-            if (solution.Count() != 0)
+            if (solution.Count != 0)
             {
                 sol += "Nama akun: " + comboBox1.SelectedItem.ToString() + " dan " + comboBox2.SelectedItem.ToString() + "\n";
                 sol += "Connection Degree : " + (solution.Count() - 1).ToString() + "\n";
@@ -95,7 +95,7 @@ namespace Zref
                 foreach (var item in solution)
                 {
                     graph.FindNode(item).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-                    if(i != 0)
+                    if (i != 0)
                     {
                         sol += " --> ";
                     }
@@ -104,15 +104,23 @@ namespace Zref
                 }
             }
             richTextBox2.Text = sol;
-            current.GetBFSAnswer()
         }
 
-        private void dodfs()
+        private List<string> dodfs(string x, string y)
         {
+            List<string> ret = new List<string>(); 
             DFS current = new DFS();
-            current.copyGraf(grafGlobal);
-
-
+            current.copyGraphV2(grafGlobal);
+            current.GetDFSAnswerFR(x);
+            current.GetDFSAnswerEF(x, y);
+            ret.Add(current.print_ans_recommendation());
+            ret.Add(current.print_ans_explore());
+            string[] z = (ret[1]).Split("->");
+            foreach (var i in z)
+            {
+                System.Diagnostics.Debug.WriteLine(i.trim());
+            }
+            return ret;
         }
 
         //----------------FIX-------------------
@@ -190,7 +198,7 @@ namespace Zref
                 if (input.Length == 2)
                 {
                     grafGlobal.AddEdge(input[0], input[1]);
-                    graph.AddEdge(input[0], input[1]);
+                    graph.AddEdge(input[0], input[1]).Attr.ArrowheadAtTarget = Microsoft.Msagl.Drawing.ArrowStyle.None;
                 }
                 else
                 {
@@ -219,18 +227,39 @@ namespace Zref
         private void button2_Click_1(object sender, EventArgs e)
         {
             //string x = (comboBox1.SelectedItem).ToString();
+            foreach (var item in grafGlobal.getGraph().Keys)
+            {
+                graph.FindNode(item).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
+            }
             if (radioButton1.Checked)
             {
-                //richTextBox1.Text= getFriendRec(comboBox1.Text);
+                
                 Dobfs();
               
             }
+            else if (radioButton2.Checked)
+            {
+                string x = comboBox1.SelectedItem.ToString();
+                string y = comboBox2.SelectedItem.ToString();
+                List<string> ret = dodfs(x,y);
+                richTextBox1.Text = ret[0];
+                richTextBox2.Text = "Nama akun: " + x + " dan " + y + "\n" + ret[1];
+            }
             else
             {
-                //dodfs();
-                //label2.Text = "DFS " + x;
+                
             }
             gambar();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            richTextBox1.Text = getFriendRec(comboBox1.Text);
         }
     }
 }
