@@ -98,8 +98,8 @@ namespace Zref
 
 			List<string> list_goal = this.graphDict[vertex];
 
-			int idx_ahirkhir = 
-			string goal = list_goal[].Count; 
+			int idx_ahirkhir = list_goal.Count();
+			string goal = list_goal[idx_akhir]; 
             GetAnswer(vertex,goal);
         }
 
