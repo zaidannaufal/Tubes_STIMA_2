@@ -86,7 +86,7 @@ namespace Zref
             string x = (comboBox1.SelectedItem).ToString();
             if (radioButton1.Checked)
             {
-                //richTextBox1.Text = "THOU SUCCED";
+                richTextBox1.Text = "THOU SUCCED";
                 //Dobfs();
                 label2.Text = "BFS " + x;
             }else
@@ -101,12 +101,12 @@ namespace Zref
         {
             BFS current = new BFS();
             current.copyGraf(grafGlobal);
-            List<string> solution = current.GetBFSAnswer(comboBox1.Text, comboBox2.Text);
+            List<string> solution = current.GetBFSAnswer(comboBox1.SelectedItem.ToString(), comboBox2.SelectedItem.ToString());
             string sol = "";
 
             if (solution.Count() != 0)
             {
-                sol += "Nama akun: " + comboBox1.Text + " dan " + comboBox2.Text + "\n";
+                sol += "Nama akun: " + comboBox1.SelectedItem.ToString() + " dan " + comboBox2.SelectedItem.ToString() + "\n";
                 sol += "Connection Degree : " + (solution.Count() - 1).ToString() + "\n";
                 int i = 0;
                 foreach (var item in solution)
