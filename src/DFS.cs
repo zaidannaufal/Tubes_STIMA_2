@@ -48,6 +48,7 @@ namespace Zref
 			//grafDFS = new SortedDictionary<string, List<string>>(graf); //copy graph dict karna mau dihapus2 
 		}
 
+
 		/*public void PrintGraphDFS()
         {
             foreach (KeyValuePair<string, List<string>> entry in grafDFS)
@@ -74,7 +75,10 @@ namespace Zref
 			return clone;
 			}
 		}*/
-		
+		public void copyGraf(Graph g1)
+		{
+			this.graphDict = g1.getGraph();
+		}
 
 
 		public bool isExist(string vertex, List<string> list)
@@ -87,6 +91,16 @@ namespace Zref
                 }
             }
 			return false;
+        }
+
+        public void GetAnswerFR(string vertex)
+        {
+
+			List<string> list_goal = this.graphDict[vertex];
+
+			int idx_ahirkhir = 
+			string goal = list_goal[].Count; 
+            GetAnswer(vertex,goal);
         }
 
 		public void GetAnswer(string vertex, string goal) // friend recom
@@ -498,19 +512,20 @@ namespace Zref
 			
         }
 
-		public void print_ans_explore()
+		public string print_ans_explore()
 		{
+			string ans_explore = "";
 			if (this.ans.Count != 0)
 			{
 				for (int i = 0; i < this.ans.Count; i++)
 				{
 					if (i == (this.ans.Count - 1))
 					{
-						Console.Write(this.ans[i] + "\n");
+						ans_explore += (this.ans[i] + "\n");
 					}
 					else
 					{
-						Console.Write(this.ans[i] + " -> ");
+						ans_explore += (this.ans[i] + " -> ");
 					}
 
 				}
@@ -518,30 +533,30 @@ namespace Zref
 				int degree = this.ans.Count - 2;
 				if ((degree % 10) == 2)
 				{
-					Console.WriteLine(degree + "nd-degree connection");
+					ans_explore += (degree + "nd-degree connection" + "\n");
 				}
 				else if ((degree % 10) == 3)
 				{
-					Console.WriteLine(degree + "rd-degree connection");
+					ans_explore += (degree + "rd-degree connection" + "\n");
 				}
 				else
 				{
-					Console.WriteLine(degree + "th-degree connection");
+					ans_explore += (degree + "th-degree connection" + "\n");
 				}
 			}
             else
             {
-				Console.WriteLine("Tidak ada jalur koneksi yang tersedia");
-				Console.WriteLine("Anda harus memulai koneksi baru itu sendiri.");
+				ans_explore += ("Tidak ada jalur koneksi yang tersedia" + "\n");
+				ans_explore += ("Anda harus memulai koneksi baru itu sendiri.");
             }
 
-
+			return ans_explore;
 		}
 
-		public void print_ans_recommendation()
+		public string print_ans_recommendation()
 		{
 			//List<string> ans_temp = new List<string>() {"E", "B", "F","B","F","C", "G","C", "F", "D", "G", "D"};
-            
+			string ans_rec = "";
 
 			//this.ans_temp .AddRange(ans_temp);
 			if (this.ans_temp.Count != 0) { 
@@ -563,7 +578,7 @@ namespace Zref
 				}*/
 
 				var no_Duplicate = new HashSet<string>(temp).ToList();
-				Console.WriteLine("------");
+				ans_rec+=("------" +"\n");
 
 				/*foreach (var v in no_Duplicate)
 				{
@@ -601,23 +616,24 @@ namespace Zref
 
 				foreach (KeyValuePair<string, List<string>> entry in neo)
 				{
-					Console.WriteLine("Nama Akun : "+entry.Key);
-					Console.WriteLine(entry.Value.Count+" mutual friends : ");
+					ans_rec += ("Nama Akun : "+entry.Key +"\n");
+					ans_rec += (entry.Value.Count+" mutual friends : " + "\n");
 
 					for (int i =0; i < entry.Value.Count; i++)
 					{
 
-						Console.WriteLine(entry.Value[i]);
+						ans_rec += (entry.Value[i]);
 					}
 				}
 			}
             else
             {
-				Console.WriteLine("Tidak ada yang bisa kami rekomendasikan.");
+				ans_rec += ("Tidak ada yang bisa kami rekomendasikan." + "\n");
             }
 
-
+			return ans_rec;
 		}
 	}
+
 
 }

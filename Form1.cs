@@ -104,10 +104,14 @@ namespace Zref
                 }
             }
             richTextBox2.Text = sol;
+            current.GetBFSAnswer()
         }
 
         private void dodfs()
         {
+            DFS current = new DFS();
+            current.copyGraf(grafGlobal);
+
 
         }
 
