@@ -206,6 +206,7 @@ namespace Zref
                     grafGlobal.AddEdge(input[0]);
                     graph.AddNode(input[0]);
                 }
+               
             }
 
             gambar();
